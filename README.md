@@ -1,66 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://github.com/lyhtc/GoScore" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg" width="400" alt="G-Scores Logo">
+  </a>
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="https://github.com/lyhtc/GoScore/actions"><img src="https://github.com/lyhtc/GoScore/workflows/tests/badge.svg" alt="Build Status"></a>
+  <a href="https://packagist.org/packages/laravel/laravel"><img src="https://img.shields.io/packagist/dt/laravel/laravel" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/laravel/laravel"><img src="https://img.shields.io/packagist/v/laravel/laravel" alt="Latest Stable Version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# G-Scores Dashboard
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Giới thiệu
+G-Scores là một ứng dụng web giúp quản lý và phân tích kết quả kỳ thi THPT Quốc Gia 2024. Ứng dụng hỗ trợ nhập dữ liệu từ file CSV, tìm kiếm điểm số, hiển thị báo cáo thống kê và danh sách top học sinh theo khối A.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tính năng
+- **Nhập dữ liệu**: Chuyển đổi dữ liệu từ file CSV vào cơ sở dữ liệu sử dụng Laravel Migration & Seeder.
+- **Tra cứu điểm**: Tìm kiếm điểm của học sinh theo số báo danh.
+- **Báo cáo thống kê**:
+  - Phân loại học sinh theo 4 mức điểm:
+    - `>= 8`
+    - `6 - 7.9`
+    - `4 - 5.9`
+    - `< 4`
+  - Hiển thị thống kê theo môn học bằng biểu đồ tương tác.
+- **Top 10 học sinh khối A**:
+  - Xếp hạng 10 học sinh có điểm cao nhất theo tổ hợp môn Toán, Lý, Hóa.
 
-## Learning Laravel
+## Công nghệ sử dụng
+- **Backend**: Laravel (PHP) với MySQL.
+- **Frontend**: HTML, CSS, JavaScript (jQuery, Chart.js).
+- **Cơ sở dữ liệu**: MySQL.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Cài đặt và chạy dự án
+### Yêu cầu hệ thống
+- PHP >= 8.0
+- Composer
+- MySQL
+- Node.js & npm
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Các bước cài đặt
+```sh
+# Clone repository
+git clone https://github.com/lyhtc/GoScore.git
+cd GoScore
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Cài đặt dependencies
+composer install
+npm install && npm run dev
 
-## Laravel Sponsors
+# Cấu hình môi trường
+cp .env.example .env
+php artisan key:generate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Cấu hình database (chỉnh sửa .env nếu cần)
+php artisan migrate
+```
 
-### Premium Partners
+## Hướng Dẫn Import File CSV
+### Nếu muốn import file CSV, làm theo các bước:
+1. **Tải file CSV vào thư mục `storage/app/public`**
+2. **Chạy lệnh import trong Laravel**
+```sh
+php artisan import:scores storage/app/public/diem_thi_thpt_2024.csv
+```
+### Nếu không có file, tải tại đây:
+[diem_thi_thpt_2024.csv](https://github.com/GoldenOwlAsia/webdev-intern-assignment-3/blob/main/dataset/diem_thi_thpt_2024.csv)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Đóng góp
+Cảm ơn bạn đã quan tâm đến dự án! Để đóng góp, vui lòng tạo Pull Request hoặc mở Issue trên GitHub.
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Giấy phép
+Dự án này được phát hành theo giấy phép [MIT](https://opensource.org/licenses/MIT).
