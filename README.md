@@ -55,6 +55,9 @@ npm install && npm run dev
 cp .env.example .env
 php artisan key:generate
 
-# Cấu hình database (chỉnh sửa .env nếu cần)
+# Cấu hình database
 php artisan migrate
+
+# Chạy dự án
+php artisan serve
 ```
