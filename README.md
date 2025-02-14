@@ -58,19 +58,3 @@ php artisan key:generate
 # Cấu hình database (chỉnh sửa .env nếu cần)
 php artisan migrate
 ```
-
-## Hướng Dẫn Import File CSV
-### Nếu muốn import file CSV, làm theo các bước:
-1. **Tải file CSV vào thư mục `storage/app/public`**
-2. **Chạy lệnh import trong Laravel**
-```sh
-php artisan import:scores storage/app/public/diem_thi_thpt_2024.csv
-```
-### Nếu không có file, tải tại đây:
-[diem_thi_thpt_2024.csv](https://github.com/GoldenOwlAsia/webdev-intern-assignment-3/blob/main/dataset/diem_thi_thpt_2024.csv)
-
-## Đóng góp
-Cảm ơn bạn đã quan tâm đến dự án! Để đóng góp, vui lòng tạo Pull Request hoặc mở Issue trên GitHub.
-
-## Giấy phép
-Dự án này được phát hành theo giấy phép [MIT](https://opensource.org/licenses/MIT).
