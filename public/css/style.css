@@ -1,0 +1,107 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    height: 10vh;
+    background-color: #0b2c6f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.header h2 {
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}
+
+#menu-toggle {
+    z-index: -999;
+}
+
+.container-fluid {
+    display: flex;
+    padding: 0;
+    min-height: 90vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: linear-gradient(to bottom, #ffcc00, #4b8b3b);
+    padding: 20px;
+    margin: 0;
+    color: white;
+    min-height: 100vh;
+    transition: left 0.3s ease-in-out;
+}
+
+.sidebar h3 {
+    text-align: left;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.sidebar a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar a:hover, .sidebar .active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #0b2c6f;
+    border-color: #0b2c6f;
+}
+
+.btn-primary:hover {
+    background-color: #093067;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    #menu-toggle {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        font-size: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: block;
+        z-index: 999;
+    }
+}
