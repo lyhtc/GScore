@@ -44,8 +44,8 @@ G-Scores là một ứng dụng web giúp quản lý và phân tích kết quả
 ### Các bước cài đặt
 ```sh
 # Clone repository
-git clone https://github.com/lyhtc/GoScore.git
-cd GoScore
+git clone https://github.com/lyhtc/GScore.git
+cd GScore
 
 # Cài đặt dependencies
 composer install
