@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use League\Csv\Reader;
-use App\Models\Score;
 use Illuminate\Support\Facades\Log;
 
 class ScoreController extends Controller
 {
-    private $csvPath = 'public/diem_thi_thpt_2024.csv';
+    private $csvPath;
+
+    public function __construct()
+    {
+        $this->csvPath = public_path(env('CSV_FILE_PATH', 'diem_thi_thpt_2024.csv'));
+    }
 
     // Tìm kiếm điểm từ file CSV
     public function checkScore(Request $request)
@@ -20,15 +23,42 @@ class ScoreController extends Controller
             return response()->json(['error' => 'Vui lòng nhập số báo danh']);
         }
 
-        $score = Score::where('sbd', $sbd)->first();
+        $record = $this->findScoreInCSV($sbd);
 
-        if (!$score) {
+        if (!$record) {
             return response()->json(['error' => 'Không tìm thấy số báo danh']);
         }
 
-        return response()->json([
-            'scores' => $score->toArray()
-        ]);
+        return response()->json(['scores' => $record]);
+    }
+
+    // Hàm hỗ trợ: Tìm kiếm điểm theo SBD trong file CSV
+    private function findScoreInCSV($sbd)
+    {
+        if (!file_exists($this->csvPath)) {
+            return null;
+        }
+
+        $handle = fopen($this->csvPath, 'r');
+        if (!$handle) return null;
+
+        $header = fgetcsv($handle);
+        if (!$header) {
+            fclose($handle);
+            return null;
+        }
+
+        while (($row = fgetcsv($handle)) !== false) {
+            if (count($row) != count($header)) continue;
+            $record = array_combine($header, $row);
+            if ($record && isset($record['sbd']) && $record['sbd'] == $sbd) {
+                fclose($handle);
+                return $record;
+            }
+        }
+
+        fclose($handle);
+        return null;
     }
 
     public function searchscores()
@@ -38,14 +68,11 @@ class ScoreController extends Controller
 
     public function report()
     {
-        $csvPath = public_path('diem_thi_thpt_2024.csv');
-
-
-        if (!file_exists($csvPath)) {
+        if (!file_exists($this->csvPath)) {
             return view('report', ['error' => 'Không tìm thấy dữ liệu']);
         }
 
-        $handle = fopen($csvPath, 'r');
+        $handle = fopen($this->csvPath, 'r');
         if (!$handle) {
             return view('report', ['error' => 'Không thể mở file CSV']);
         }
@@ -56,14 +83,12 @@ class ScoreController extends Controller
             return view('report', ['error' => 'File CSV không hợp lệ']);
         }
 
-        // Các môn cần thống kê
         $subjects = ['toan', 'ngu_van', 'ngoai_ngu', 'vat_li', 'hoa_hoc', 'sinh_hoc', 'lich_su', 'dia_li', 'gdcd'];
         $stats = array_fill_keys($subjects, [0, 0, 0, 0]);
 
         $students = [];
 
         while (($row = fgetcsv($handle)) !== false) {
-            // Nếu số cột trong dòng không khớp với header, bỏ qua
             if (count($row) != count($header)) continue;
 
             $record = array_combine($header, $row);
@@ -91,7 +116,6 @@ class ScoreController extends Controller
 
         fclose($handle);
 
-        // Top 10 học sinh khối A (Toán, Lý, Hóa)
         usort($students, fn($a, $b) => $b['total'] <=> $a['total']);
         $top10 = array_slice($students, 0, 10);
 
