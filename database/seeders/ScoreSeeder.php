@@ -15,7 +15,7 @@ class ScoreSeeder extends Seeder
     public function run(): void
     {
         ini_set('default_charset', 'UTF-8');
-        $file = fopen(storage_path('app/diem_thi_thpt_2024.csv'), 'r');
+        $file = fopen(public_path('diem_thi_thpt_2024.csv'), 'r');
         $header = fgetcsv($file);
         while (($data = fgetcsv($file)) !== FALSE) {
             DB::table('scores')->insert([

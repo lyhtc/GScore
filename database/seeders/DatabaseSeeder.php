@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Đọc dữ liệu từ file CSV và chèn vào bảng scores
-        $csvFile = storage_path('app/diem_thi_thpt_2024.csv');
+        $csvFile = public_path('diem_thi_thpt_2024.csv');
 
         if (!file_exists($csvFile)) {
             $this->command->error("File $csvFile không tồn tại!");

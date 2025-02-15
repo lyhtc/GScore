@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class ScoreController extends Controller
 {
-    private $csvPath = 'storage/app/diem_thi_thpt_2024.csv';
+    private $csvPath = 'public/diem_thi_thpt_2024.csv';
 
     // Tìm kiếm điểm từ file CSV
     public function checkScore(Request $request)
@@ -38,7 +38,8 @@ class ScoreController extends Controller
 
     public function report()
     {
-        $csvPath = storage_path('app/diem_thi_thpt_2024.csv');
+        $csvPath = public_path('diem_thi_thpt_2024.csv');
+
 
         if (!file_exists($csvPath)) {
             return view('report', ['error' => 'Không tìm thấy dữ liệu']);
