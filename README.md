@@ -56,7 +56,7 @@ cp .env.example .env
 php artisan key:generate
 
 # Cấu hình database
-php artisan migrate
+php artisan migrate --seed
 
 # Chạy dự án
 php artisan serve
