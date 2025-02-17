@@ -3,6 +3,8 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    Options +FollowSymLinks
+
     RewriteEngine On
 
     # Handle Authorization Header
@@ -17,6 +19,30 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
+
+    # Block access to sensitive files
+    <FilesMatch "^\.">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+
+    <Files composer.json>
+        Order allow,deny
+        Deny from all
+    </Files>
+
+    <Files composer.lock>
+        Order allow,deny
+        Deny from all
+    </Files>
+
+    <Files .env>
+        Order allow,deny
+        Deny from all
+    </Files>
+
+    # Block direct access to storage and cache
+    RewriteRule ^storage/.*$ - [F,L]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
