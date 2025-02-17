@@ -1,36 +1,29 @@
-# Sử dụng PHP với Apache
-FROM php:8.1-apache
+# Sử dụng PHP 8.2 với Apache
+FROM php:8.2-apache
 
-# Cài đặt các extension cần thiết
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+# Cài đặt các extension PHP cần thiết
+RUN apt-get update && apt-get install -y libzip-dev unzip && docker-php-ext-install zip pdo pdo_mysql
 
-# Cài Composer
+# Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Cài Laravel
-WORKDIR /var/www
+# Set thư mục làm việc
+WORKDIR /var/www/html
+
+# Copy toàn bộ code vào container
 COPY . .
+
+# Cấp quyền cho storage và bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache
+
+# Cài đặt các package PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Chỉnh quyền thư mục storage và bootstrap/cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# Chạy lệnh cache config để tối ưu hiệu suất
+RUN php artisan config:cache
 
-# Cấu hình Apache
-COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
-
-# Expose cổng
+# Expose port 80 để truy cập từ bên ngoài
 EXPOSE 80
 
-# Chạy server
-CMD ["apache2-foreground"]
+# Lệnh chạy khi container khởi động
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
